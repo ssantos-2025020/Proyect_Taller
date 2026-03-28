@@ -113,11 +113,11 @@ La API corre en `http://localhost:9000`
 **Body POST/PUT:**
 ```json
 {
-    "DPICliente": "1457689324567",
-    "nombreCliente": "Juan",
-    "apellidoCliente": "Perez",
-    "direccion": "Zona 1 Guatemala",
-    "estado": 1
+  "DPICliente": "1457689324567",
+  "nombreCliente": "Juan",
+  "apellidoCliente": "Perez",
+  "direccion": "Zona 1 Guatemala",
+  "estado": 1
 }
 ```
 
@@ -138,11 +138,11 @@ La API corre en `http://localhost:9000`
 **Body POST/PUT:**
 ```json
 {
-    "username": "jsantos",
-    "password": "123456",
-    "email": "jsantos@kinal.edu.gt",
-    "rol": "VENDEDOR",
-    "estado": 1
+  "username": "jsantos",
+  "password": "123456",
+  "email": "jsantos@kinal.edu.gt",
+  "rol": "VENDEDOR",
+  "estado": 1
 }
 ```
 
@@ -162,10 +162,10 @@ La API corre en `http://localhost:9000`
 **Body POST/PUT:**
 ```json
 {
-    "nombreProducto": "Laptop HP",
-    "precio": 3500.00,
-    "stock": 10,
-    "estado": 1
+  "nombreProducto": "Laptop HP",
+  "precio": 3500.00,
+  "stock": 10,
+  "estado": 1
 }
 ```
 
@@ -185,24 +185,24 @@ La API corre en `http://localhost:9000`
 **Body POST/PUT:**
 ```json
 {
-    "fechaVenta": "2025-03-26",
-    "total": 3500.00,
-    "estado": 1,
-    "cliente": {
-        "DPICliente": "1457689324567",
-        "nombreCliente": "Juan",
-        "apellidoCliente": "Perez",
-        "direccion": "Zona 1 Guatemala",
-        "estado": 1
-    },
-    "usuario": {
-        "codigoUsuario": 1,
-        "username": "jsantos",
-        "password": "123456",
-        "email": "jsantos@kinal.edu.gt",
-        "rol": "VENDEDOR",
-        "estado": 1
-    }
+  "fechaVenta": "2025-03-26",
+  "total": 3500.00,
+  "estado": 1,
+  "cliente": {
+    "DPICliente": "1457689324567",
+    "nombreCliente": "Juan",
+    "apellidoCliente": "Perez",
+    "direccion": "Zona 1 Guatemala",
+    "estado": 1
+  },
+  "usuario": {
+    "codigoUsuario": 1,
+    "username": "jsantos",
+    "password": "123456",
+    "email": "jsantos@kinal.edu.gt",
+    "rol": "VENDEDOR",
+    "estado": 1
+  }
 }
 ```
 
@@ -222,36 +222,36 @@ La API corre en `http://localhost:9000`
 **Body POST/PUT:**
 ```json
 {
-    "cantidad": 2,
-    "precioUnitario": 3500.00,
-    "producto": {
-        "codigoProducto": 1,
-        "nombreProducto": "Laptop HP",
-        "precio": 3500.00,
-        "stock": 10,
-        "estado": 1
+  "cantidad": 2,
+  "precioUnitario": 3500.00,
+  "producto": {
+    "codigoProducto": 1,
+    "nombreProducto": "Laptop HP",
+    "precio": 3500.00,
+    "stock": 10,
+    "estado": 1
+  },
+  "venta": {
+    "codigoVenta": 1,
+    "fechaVenta": "2025-03-26",
+    "total": 3500.00,
+    "estado": 1,
+    "cliente": {
+      "DPICliente": "1457689324567",
+      "nombreCliente": "Juan",
+      "apellidoCliente": "Perez",
+      "direccion": "Zona 1 Guatemala",
+      "estado": 1
     },
-    "venta": {
-        "codigoVenta": 1,
-        "fechaVenta": "2025-03-26",
-        "total": 3500.00,
-        "estado": 1,
-        "cliente": {
-            "DPICliente": "1457689324567",
-            "nombreCliente": "Juan",
-            "apellidoCliente": "Perez",
-            "direccion": "Zona 1 Guatemala",
-            "estado": 1
-        },
-        "usuario": {
-            "codigoUsuario": 1,
-            "username": "jsantos",
-            "password": "123456",
-            "email": "jsantos@kinal.edu.gt",
-            "rol": "VENDEDOR",
-            "estado": 1
-        }
+    "usuario": {
+      "codigoUsuario": 1,
+      "username": "jsantos",
+      "password": "123456",
+      "email": "jsantos@kinal.edu.gt",
+      "rol": "VENDEDOR",
+      "estado": 1
     }
+  }
 }
 ```
 
@@ -298,6 +298,124 @@ Cambiar el puerto en `application.properties`:
 ```properties
 server.port=9001
 ```
+
+---
+
+##  Prueba de Codigo
+
+Al ejecutar el proyecto en IntelliJ se puede verificar que la aplicacion
+inicia correctamente en el puerto 9000, que Spring detecta los 5 repositorios,
+que Hibernate crea las tablas en la base de datos y que Tomcat queda listo
+para recibir peticiones.
+
+![Ejecucion del proyecto](screenshots/Codigo/ejecucion.png)
+
+---
+
+##  Pruebas en Postman
+
+###  Cliente
+
+Trae todos los clientes de la base de datos
+![List Clientes](screenshots/Cliente/list-clientes.png)
+
+Crea un nuevo cliente
+![Add Clientes](screenshots/Cliente/add-clientes.png)
+
+Busca un cliente por su DPI
+![Find Clientes](screenshots/Cliente/find-clientes.png)
+
+Actualiza los datos de un cliente existente
+![Update Clientes](screenshots/Cliente/update-clientes.png)
+
+Elimina un cliente por su DPI
+![Delete Clientes](screenshots/Cliente/delete-clientes.png)
+
+Trae solo los clientes con estado activo
+![Activos Clientes](screenshots/Cliente/activos-clientes.png)
+
+###  Usuario
+
+Trae todos los usuarios de la base de datos
+![List Usuarios](screenshots/Usuario/list-usuarios.png)
+
+Crea un nuevo usuario
+![Add Usuarios](screenshots/Usuario/add-usuarios.png)
+
+Busca un usuario por su ID
+![Find Usuarios](screenshots/Usuario/find-usuarios.png)
+
+Actualiza los datos de un usuario existente
+![Update Usuarios](screenshots/Usuario/update-usuarios.png)
+
+Elimina un usuario por su ID
+![Delete Usuarios](screenshots/Usuario/delete-usuarios.png)
+
+Trae solo los usuarios con estado activo
+![Activos Usuarios](screenshots/Usuario/activos-usuarios.png)
+
+Trae usuarios filtrados por su rol
+![Rol Usuarios](screenshots/Usuario/rol-usuarios.png)
+
+###  Producto
+
+Trae todos los productos de la base de datos
+![List Productos](screenshots/Producto/list-productos.png)
+
+Crea un nuevo producto
+![Add Productos](screenshots/Producto/add-productos.png)
+
+Busca un producto por su ID
+![Find Productos](screenshots/Producto/find-productos.png)
+
+Actualiza los datos de un producto existente
+![Update Productos](screenshots/Producto/update-productos.png)
+
+Elimina un producto por su ID
+![Delete Productos](screenshots/Producto/delete-productos.png)
+
+Trae solo los productos con estado activo
+![Activos Productos](screenshots/Producto/activos-productos.png)
+
+###  Venta
+
+Trae todas las ventas de la base de datos
+![List Ventas](screenshots/Venta/list-ventas.png)
+
+Crea una nueva venta asociada a un cliente y usuario existente
+![Add Ventas](screenshots/Venta/add-ventas.png)
+
+Busca una venta por su ID
+![Find Ventas](screenshots/Venta/find-ventas.png)
+
+Actualiza los datos de una venta existente
+![Update Ventas](screenshots/Venta/update-ventas.png)
+
+Elimina una venta por su ID
+![Delete Ventas](screenshots/Venta/delete-ventas.png)
+
+Trae solo las ventas con estado activo
+![Activas Ventas](screenshots/Venta/activas-ventas.png)
+
+###  DetalleVenta
+
+Trae todos los detalles de venta de la base de datos
+![List DetalleVenta](screenshots/DetalleVenta/list-detalle-ventas.png)
+
+Crea un nuevo detalle, el subtotal se calcula automaticamente
+![Add DetalleVenta](screenshots/DetalleVenta/add-detalle-ventas.png)
+
+Busca un detalle por su ID
+![Find DetalleVenta](screenshots/DetalleVenta/find-detalle-ventas.png)
+
+Actualiza los datos de un detalle existente
+![Update DetalleVenta](screenshots/DetalleVenta/update-detalle-ventas.png)
+
+Elimina un detalle por su ID
+![Delete DetalleVenta](screenshots/DetalleVenta/delete-detalle-ventas.png)
+
+Trae todos los detalles que pertenecen a una venta especifica
+![PorVenta DetalleVenta](screenshots/DetalleVenta/porventa-detalle-ventas.png)
 
 ---
 
