@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KinalApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="logo">
+        <img src="/images/logo.png" width="45" height="45" alt="KinalApp Logo" style="margin-bottom: 8px;">
+        <div class="logo-name">KinalApp</div>
+        <div class="logo-sub">Sistema de gestión</div>
+    </div>
+    <nav class="nav">
+        <div class="nav-label">General</div>
+        <button class="nav-item active" data-section="dashboard">
+            <span class="nav-dot" style="background:#2d5a3d"></span> Dashboard
+        </button>
+        <div class="nav-label">Módulos</div>
+        <button class="nav-item" data-section="clientes">
+            <span class="nav-dot" style="background:#2a4d8f"></span> Clientes
+        </button>
+        <button class="nav-item" data-section="productos">
+            <span class="nav-dot" style="background:#a06b1a"></span> Productos
+        </button>
+        <button class="nav-item" data-section="ventas">
+            <span class="nav-dot" style="background:#c4622d"></span> Ventas
+        </button>
+        <button class="nav-item" data-section="detalle">
+            <span class="nav-dot" style="background:#5a3d8f"></span> Detalle Venta
+        </button>
+        <button class="nav-item" data-section="usuarios">
+            <span class="nav-dot" style="background:#1d7a6e"></span> Usuarios
+        </button>
+    </nav>
+    <div class="sidebar-footer" id="clock">—</div>
+</aside>
+
+<div class="main">
+    <header class="topbar">
+        <span class="page-title" id="page-title">Dashboard</span>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <span id="usuario-nombre" style="font-size: 13px; color: var(--text2);">—</span>
+            <span id="usuario-rol"></span>
+            <button id="btn-cerrar-sesion" class="btn btn-sm" style="background: var(--red-light); color: var(--red);">Cerrar sesión</button>
+            <span style="font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;">localhost:9000</span>
+        </div>
+    </header>
+    <div class="content">
+
+        <!-- DASHBOARD -->
+        <div class="section active" id="sec-dashboard">
+            <div class="welcome-card">
+                <div>
+                    <div class="welcome-title">Bienvenido a KinalApp</div>
+                    <div class="welcome-sub">Fundación Kinal — Sistema de gestión de ventas</div>
+                </div>
+                <div class="welcome-badge" id="dash-fecha">—</div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-label">Clientes</div><div class="stat-val" style="color:var(--blue)" id="d-clientes">—</div><div class="stat-sub">registrados</div></div>
+                <div class="stat-card"><div class="stat-label">Productos</div><div class="stat-val" style="color:var(--amber)" id="d-productos">—</div><div class="stat-sub">en catálogo</div></div>
+                <div class="stat-card"><div class="stat-label">Ventas</div><div class="stat-val" style="color:#c4622d" id="d-ventas">—</div><div class="stat-sub">totales</div></div>
+                <div class="stat-card"><div class="stat-label">Detalles</div><div class="stat-val" style="color:var(--purple)" id="d-detalles">—</div><div class="stat-sub">de venta</div></div>
+                <div class="stat-card"><div class="stat-label">Usuarios</div><div class="stat-val" style="color:var(--teal)" id="d-usuarios">—</div><div class="stat-sub">del sistema</div></div>
+            </div>
+        </div>
+
+        <!-- CLIENTES -->
+        <div class="section" id="sec-clientes">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <div class="search-wrap">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <input class="search-input" id="search-clientes" placeholder="Buscar cliente..." />
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btn-nuevo-cliente">+ Nuevo cliente</button>
+                </div>
+                <div class="table-wrap">
+                    <table id="tbl-clientes">
+                        <thead><tr><th>DPI</th><th>Nombre</th><th>Apellido</th><th>Dirección</th><th>Estado</th><th></th></tr></thead>
+                        <tbody id="body-clientes"><tr class="empty-row"><td colspan="6">Cargando...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRODUCTOS -->
+        <div class="section" id="sec-productos">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <div class="search-wrap">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <input class="search-input" id="search-productos" placeholder="Buscar producto..." />
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btn-nuevo-producto">+ Nuevo producto</button>
+                </div>
+                <div class="table-wrap">
+                    <table id="tbl-productos">
+                        <thead><tr><th>Código</th><th>Nombre</th><th>Precio</th><th>Stock</th><th>Estado</th><th></th></tr></thead>
+                        <tbody id="body-productos"><tr class="empty-row"><td colspan="6">Cargando...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- VENTAS -->
+        <div class="section" id="sec-ventas">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <div class="search-wrap">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <input class="search-input" id="search-ventas" placeholder="Buscar venta..." />
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btn-nueva-venta">+ Nueva venta</button>
+                </div>
+                <div class="table-wrap">
+                    <table id="tbl-ventas">
+                        <thead><tr><th>Código</th><th>Fecha</th><th>Total</th><th>Cliente DPI</th><th>Usuario ID</th><th>Estado</th><th></th></tr></thead>
+                        <tbody id="body-ventas"><tr class="empty-row"><td colspan="7">Cargando...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- DETALLE VENTA -->
+        <div class="section" id="sec-detalle">
+            <div class="info-note">&#9432; Los detalles de venta no se pueden eliminar por integridad contable. Solo se permite crear y visualizar.</div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <div class="search-wrap">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <input class="search-input" id="search-detalle" placeholder="Buscar detalle..." />
+                        </div>
+                        <input class="filter-input" type="number" id="filter-venta-id" placeholder="Filtrar por ID venta" style="width:160px" />
+                    </div>
+                    <button class="btn btn-primary" id="btn-nuevo-detalle">+ Nuevo detalle</button>
+                </div>
+                <div class="table-wrap">
+                    <table id="tbl-detalle">
+                        <thead><tr><th>Código</th><th>Venta ID</th><th>Producto ID</th><th>Cantidad</th><th>Precio unitario</th><th>Subtotal</th><th></th></tr></thead>
+                        <tbody id="body-detalle"><tr class="empty-row"><td colspan="7">Cargando...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- USUARIOS -->
+        <div class="section" id="sec-usuarios">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <div class="search-wrap">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <input class="search-input" id="search-usuarios" placeholder="Buscar usuario..." />
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btn-nuevo-usuario">+ Nuevo usuario</button>
+                </div>
+                <div class="table-wrap">
+                    <table id="tbl-usuarios">
+                        <thead><tr><th>Código</th><th>Username</th><th>Email</th><th>Rol</th><th>Estado</th><th></th></tr></thead>
+                        <tbody id="body-usuarios"><tr class="empty-row"><td colspan="6">Cargando...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODALES -->
+<div class="modal-bg" id="modal-cliente"><div class="modal"><div class="modal-header"><span class="modal-title" id="titulo-cliente">Nuevo cliente</span><button class="modal-close" data-modal="modal-cliente">×</button></div><div class="form-group"><label>DPI <span class="req">*</span></label><input id="c-dpi" placeholder="13 dígitos numéricos" maxlength="13" /><div class="field-error" id="err-c-dpi">El DPI debe tener exactamente 13 dígitos numéricos.</div></div><div class="form-row"><div class="form-group"><label>Nombre <span class="req">*</span></label><input id="c-nombre" placeholder="Nombre" maxlength="100" /><div class="field-error" id="err-c-nombre">El nombre es obligatorio (mín. 2 caracteres).</div></div><div class="form-group"><label>Apellido <span class="req">*</span></label><input id="c-apellido" placeholder="Apellido" maxlength="100" /><div class="field-error" id="err-c-apellido">El apellido es obligatorio (mín. 2 caracteres).</div></div></div><div class="form-group"><label>Dirección <span class="req">*</span></label><input id="c-direccion" placeholder="Dirección completa" maxlength="255" /><div class="field-error" id="err-c-direccion">La dirección es obligatoria (mín. 5 caracteres).</div></div><div class="form-group"><label>Estado</label><select id="c-estado"><option value="1">Activo</option><option value="0">Inactivo</option></select></div><input type="hidden" id="c-editing-dpi" /><div class="form-actions"><button class="btn" data-modal="modal-cliente">Cancelar</button><button class="btn btn-primary" id="guardar-cliente">Guardar</button></div></div></div>
+
+<div class="modal-bg" id="modal-producto"><div class="modal"><div class="modal-header"><span class="modal-title" id="titulo-producto">Nuevo producto</span><button class="modal-close" data-modal="modal-producto">×</button></div><div class="form-group"><label>Nombre del producto <span class="req">*</span></label><input id="p-nombre" placeholder="Ej: Laptop HP 15" maxlength="100" /><div class="field-error" id="err-p-nombre">El nombre es obligatorio (mín. 2 caracteres).</div></div><div class="form-row"><div class="form-group"><label>Precio (Q) <span class="req">*</span></label><input id="p-precio" type="number" step="0.01" min="0.01" placeholder="0.00" /><div class="field-error" id="err-p-precio">El precio debe ser mayor a Q0.00.</div></div><div class="form-group"><label>Stock <span class="req">*</span></label><input id="p-stock" type="number" min="0" placeholder="0" /><div class="field-error" id="err-p-stock">El stock no puede ser negativo.</div></div></div><div class="form-group"><label>Estado</label><select id="p-estado"><option value="1">Activo</option><option value="0">Inactivo</option></select></div><input type="hidden" id="p-editing-id" /><div class="form-actions"><button class="btn" data-modal="modal-producto">Cancelar</button><button class="btn btn-primary" id="guardar-producto">Guardar</button></div></div></div>
+
+<div class="modal-bg" id="modal-venta"><div class="modal"><div class="modal-header"><span class="modal-title" id="titulo-venta">Nueva venta</span><button class="modal-close" data-modal="modal-venta">×</button></div><div class="form-row"><div class="form-group"><label>Fecha <span class="req">*</span></label><input id="v-fecha" type="date" /><div class="field-error" id="err-v-fecha">La fecha es obligatoria.</div></div><div class="form-group"><label>Total (Q) <span class="req">*</span></label><input id="v-total" type="number" step="0.01" min="0.01" placeholder="0.00" /><div class="field-error" id="err-v-total">El total debe ser mayor a Q0.00.</div></div></div><div class="form-row"><div class="form-group"><label>DPI Cliente <span class="req">*</span></label><input id="v-cliente" placeholder="13 dígitos del cliente" maxlength="13" /><div class="field-error" id="err-v-cliente">Ingresa el DPI del cliente (13 dígitos).</div></div><div class="form-group"><label>ID Usuario <span class="req">*</span></label><input id="v-usuario" type="number" min="1" placeholder="ID del usuario" /><div class="field-error" id="err-v-usuario">El ID de usuario debe ser mayor a 0.</div></div></div><div class="form-group"><label>Estado</label><select id="v-estado"><option value="1">Activo</option><option value="0">Inactivo</option></select></div><input type="hidden" id="v-editing-id" /><div class="form-actions"><button class="btn" data-modal="modal-venta">Cancelar</button><button class="btn btn-primary" id="guardar-venta">Guardar</button></div></div></div>
+
+<div class="modal-bg" id="modal-detalle"><div class="modal"><div class="modal-header"><span class="modal-title" id="titulo-detalle">Nuevo detalle de venta</span><button class="modal-close" data-modal="modal-detalle">×</button></div><div class="form-row"><div class="form-group"><label>ID Venta <span class="req">*</span></label><input id="dv-venta" type="number" min="1" placeholder="ID de la venta" /><div class="field-error" id="err-dv-venta">El ID de venta debe ser mayor a 0.</div></div><div class="form-group"><label>ID Producto <span class="req">*</span></label><input id="dv-producto" type="number" min="1" placeholder="ID del producto" /><div class="field-error" id="err-dv-producto">El ID de producto debe ser mayor a 0.</div></div></div><div class="form-row"><div class="form-group"><label>Cantidad <span class="req">*</span></label><input id="dv-cantidad" type="number" min="1" placeholder="1" /><div class="field-error" id="err-dv-cantidad">La cantidad debe ser al menos 1.</div></div><div class="form-group"><label>Precio unitario (Q) <span class="req">*</span></label><input id="dv-precio" type="number" step="0.01" min="0.01" placeholder="0.00" /><div class="field-error" id="err-dv-precio">El precio unitario debe ser mayor a Q0.00.</div></div></div><div class="form-group"><label>Subtotal (Q) — calculado automáticamente</label><input id="dv-subtotal" type="number" step="0.01" readonly style="background:var(--surface2);color:var(--text2);cursor:not-allowed" /></div><input type="hidden" id="dv-editing-id" /><div class="form-actions"><button class="btn" data-modal="modal-detalle">Cancelar</button><button class="btn btn-primary" id="guardar-detalle">Guardar</button></div></div></div>
+
+<div class="modal-bg" id="modal-usuario"><div class="modal"><div class="modal-header"><span class="modal-title" id="titulo-usuario">Nuevo usuario</span><button class="modal-close" data-modal="modal-usuario">×</button></div><div class="form-row"><div class="form-group"><label>Username <span class="req">*</span></label><input id="u-username" placeholder="sin espacios" maxlength="45" /><div class="field-error" id="err-u-username">Mín. 3 caracteres, sin espacios.</div></div><div class="form-group"><label>Rol <span class="req">*</span></label><select id="u-rol"><option value="">Seleccionar...</option><option value="ADMIN">ADMIN</option><option value="USER">USER</option></select><div class="field-error" id="err-u-rol">Debes seleccionar un rol.</div></div></div><div class="form-group"><label>Email <span class="req">*</span></label><input id="u-email" type="email" placeholder="correo@ejemplo.com" maxlength="60" /><div class="field-error" id="err-u-email">Ingresa un correo electrónico válido.</div></div><div class="form-group"><label>Password <span class="req" id="lbl-pass-req">*</span></label><input id="u-password" type="password" placeholder="Mínimo 6 caracteres" /><div class="field-error" id="err-u-password">La contraseña debe tener al menos 6 caracteres.</div></div><div class="form-group"><label>Estado</label><select id="u-estado"><option value="1">Activo</option><option value="0">Inactivo</option></select></div><input type="hidden" id="u-editing-id" /><div class="form-actions"><button class="btn" data-modal="modal-usuario">Cancelar</button><button class="btn btn-primary" id="guardar-usuario">Guardar</button></div></div></div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script type="module" src="js/main.js"></script>
+
+</body>
+</html>
