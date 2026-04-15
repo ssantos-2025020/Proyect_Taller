@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KinalApp — Registro de usuario</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="registro.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="register-wrapper">
+
+    <div class="register-card" id="register-card">
+
+        <!-- Logo y título -->
+        <div class="register-brand">
+            <div class="register-brand-icon">🌿</div>
+            <div class="register-brand-name">Crear cuenta</div>
+            <div class="register-brand-sub">KinalApp · Fundación Kinal</div>
+        </div>
+
+        <!-- Mensaje de error global -->
+        <div class="register-error-global" id="register-error-global"></div>
+
+        <!-- Formulario de registro -->
+        <div id="register-form">
+
+            <!-- Usuario -->
+            <div class="mb-3">
+                <label class="register-label" for="r-username">
+                    Usuario <span style="color:#b83232">*</span>
+                </label>
+                <input id="r-username" type="text" class="register-input" placeholder="Ej: jperez" maxlength="45" autocomplete="off" />
+                <div class="ka-field-error" id="err-r-username">⚠ El usuario es obligatorio (mínimo 3 caracteres).</div>
+            </div>
+
+            <!-- Correo electrónico -->
+            <div class="mb-3">
+                <label class="register-label" for="r-email">
+                    Correo electrónico <span style="color:#b83232">*</span>
+                </label>
+                <input id="r-email" type="email" class="register-input" placeholder="ejemplo@kinal.edu.gt" maxlength="60" autocomplete="off" />
+                <div class="ka-field-error" id="err-r-email">⚠ Ingresa un correo válido.</div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="mb-3">
+                <label class="register-label" for="r-password">
+                    Contraseña <span style="color:#b83232">*</span>
+                </label>
+                <div class="register-input-wrap">
+                    <input id="r-password" type="password" class="register-input register-input-with-btn" placeholder="Mínimo 6 caracteres" autocomplete="off" />
+                    <button class="btn-toggle-pass" id="btn-toggle-pass" type="button">
+                        <span id="toggle-icon">👁</span>
+                    </button>
+                </div>
+                <div class="ka-field-error" id="err-r-password">⚠ La contraseña debe tener al menos 6 caracteres.</div>
+            </div>
+
+            <!-- Clave de administrador (opcional) -->
+            <div class="mb-3">
+                <label class="register-label" for="r-admin-key">
+                    Clave de administrador <span style="color:#9e9e96">(opcional)</span>
+                </label>
+                <input id="r-admin-key" type="password" class="register-input" placeholder="Solo si quieres ser ADMIN" autocomplete="off" />
+                <div class="ka-field-error" id="err-r-admin-key">⚠ Clave incorrecta.</div>
+                <small style="font-size: 11px; color: #9e9e96;">Si tienes la clave secreta, podrás registrarte como administrador.</small>
+            </div>
+
+            <!-- Botón registrarse -->
+            <button class="btn-register" id="btn-register">
+                <span class="register-spinner" id="register-spinner"></span>
+                <span id="btn-register-text">Registrarse</span>
+            </button>
+
+        </div>
+
+        <hr class="register-divider" />
+
+        <!-- Enlace a login -->
+        <div class="login-link">
+            <a href="/login.html">← Ya tengo cuenta, iniciar sesión</a>
+        </div>
+
+    </div>
+
+    <div class="register-footer">
+        KinalApp · Fundación Kinal · IN5AM · 2025
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/registro.js" type="module"></script>
+
+</body>
+</html>
