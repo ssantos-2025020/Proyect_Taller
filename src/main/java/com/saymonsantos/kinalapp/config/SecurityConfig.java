@@ -71,6 +71,9 @@ public class SecurityConfig {
                         // ── INDEX / DASHBOARD ──
                         .requestMatchers("/index.html").hasAnyRole("ADMIN", "USER")
 
+                        // ── API ENDPOINTS ──
+                        .requestMatchers("/api/usuario-actual", "/login-success").authenticated()
+
                         // ── Todo lo demás requiere autenticación ──
                         .anyRequest().authenticated()
                 )

@@ -67,10 +67,32 @@ const Auth = {
    * Protege una página: si no hay sesión, redirige al login
    * Excluye las páginas de login y registro
    */
-  protegerPagina() {
-    if (!this.estaLogueado() &&
-        !window.location.pathname.includes('login.html') &&
-        !window.location.pathname.includes('registro.html')) {
+  async protegerPagina() {
+    // Si estamos en login o registro, no hacer nada
+    if (window.location.pathname.includes('login.html') ||
+        window.location.pathname.includes('registro.html')) {
+      return;
+    }
+
+    // Si no hay datos en sessionStorage, intentar obtenerlos del backend
+    if (!this.estaLogueado()) {
+      try {
+        const response = await fetch('/api/usuario-actual');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.autenticado) {
+            this.setUsuario({
+              username: data.username,
+              rol: data.rol
+            });
+            return; // Continuar en la página actual
+          }
+        }
+      } catch (error) {
+        console.error('Error verificando autenticación:', error);
+      }
+
+      // Si no hay sesión o no se pudo verificar, redirigir al login
       window.location.href = '/login.html';
     }
   },

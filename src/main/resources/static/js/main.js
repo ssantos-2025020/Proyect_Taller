@@ -14,10 +14,10 @@ import { cargarUsuarios, guardarUsuario, abrirModalUsuario } from './usuarios.js
 import { cerrarModal } from './utils.js';
 
 // Proteger página (si no hay sesión, redirige al login)
-Auth.protegerPagina();
-
-// Mostrar nombre y rol del usuario en el topbar
-Auth.mostrarUsuario();
+Auth.protegerPagina().then(() => {
+  // Mostrar nombre y rol del usuario en el topbar después de verificar
+  Auth.mostrarUsuario();
+});
 
 // Variable para la navegación
 let currentSection = 'dashboard';
