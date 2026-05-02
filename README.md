@@ -7,10 +7,13 @@ Sistema de ventas desarrollado con Spring Boot y MySQL. Permite gestionar client
 ## 🚀 Tecnologías utilizadas
 
 - **Java 21**
-- **Spring Boot 3.x**
+- **Spring Boot 4.0.5**
+- **Spring Security 6.x**
 - **Spring Data JPA / Hibernate**
 - **MySQL 8.0**
 - **Maven**
+- **Thymeleaf**
+- **Bootstrap 5**
 - **IntelliJ IDEA**
 
 ---
@@ -69,6 +72,9 @@ mvn spring-boot:run
 
 ```
 src/main/java/com/saymonsantos/kinalapp/
+├── config/
+│   ├── SecurityConfig.java
+│   └── UsuarioDetailsService.java
 ├── entity/
 │   ├── Cliente.java
 │   ├── Usuario.java
@@ -89,10 +95,13 @@ src/main/java/com/saymonsantos/kinalapp/
 │   └── IDetalleVentaService.java / DetalleVentaService.java
 ├── controller/
 │   ├── ClienteController.java
-│   ├── UsuarioController.java
+│   ├── ClienteViewController.java
+│   ├── DetalleVentaController.java
+│   ├── LoginController.java
 │   ├── ProductoController.java
-│   ├── VentaController.java
-│   └── DetalleVentaController.java
+│   ├── RegistroController.java
+│   ├── UsuarioController.java
+│   └── VentaController.java
 └── KinalappApplication.java
 ```
 
@@ -142,7 +151,7 @@ La API corre en `http://localhost:9000`
   "username": "jsantos",
   "password": "123456",
   "email": "jsantos@kinal.edu.gt",
-  "rol": "VENDEDOR",
+  "rol": "USER",
   "estado": 1
 }
 ```
@@ -197,7 +206,7 @@ La API corre en `http://localhost:9000`
     "username": "jsantos",
     "password": "123456",
     "email": "jsantos@kinal.edu.gt",
-    "rol": "VENDEDOR",
+    "rol": "USER",
     "estado": 1
   }
 }
@@ -230,22 +239,7 @@ La API corre en `http://localhost:9000`
     "codigoVenta": 1,
     "fechaVenta": "2025-03-26",
     "total": 3500.00,
-    "estado": 1,
-    "cliente": {
-      "DPICliente": "1457689324567",
-      "nombreCliente": "Juan",
-      "apellidoCliente": "Perez",
-      "direccion": "Zona 1 Guatemala",
-      "estado": 1
-    },
-    "usuario": {
-      "codigoUsuario": 1,
-      "username": "jsantos",
-      "password": "123456",
-      "email": "jsantos@kinal.edu.gt",
-      "rol": "VENDEDOR",
-      "estado": 1
-    }
+    "estado": 1
   }
 }
 ```
@@ -411,15 +405,13 @@ Trae todos los detalles que pertenecen a una venta específica
 
 ---
 
----
-
-#  Actualización — Dashboard Web (Frontend)
+# Actualización — Dashboard Web (Frontend)
 
 Se agregó un dashboard web completo con login, registro, roles y CRUD visual para todos los módulos.
 
 ---
 
-##  Nuevas tecnologías agregadas
+## Nuevas tecnologías agregadas
 
 - **HTML5 / CSS3**
 - **JavaScript (ES6 Modules)**
@@ -430,7 +422,7 @@ Se agregó un dashboard web completo con login, registro, roles y CRUD visual pa
 
 ---
 
-##  Estructura agregada al proyecto
+## Estructura agregada al proyecto
 
 ```
 src/main/resources/
@@ -473,7 +465,7 @@ controller/
 
 ---
 
-##  Login y Registro
+## Login y Registro
 
 - **login.html** — Inicio de sesión con validación de campos, animaciones de error/éxito y conexión al backend.
 - **registro.html** — Registro de nuevos usuarios. Si se ingresa la clave secreta (`Kinal2025Admin`) se registra como ADMIN; de lo contrario, como USER.
@@ -482,14 +474,14 @@ controller/
 
 ---
 
-##  Manejo de sesión (`auth.js`)
+## Manejo de sesión (`auth.js`)
 
 Guarda el usuario en `sessionStorage` (se borra al cerrar el navegador).  
 Funciones disponibles: `setUsuario`, `getUsuario`, `estaLogueado`, `esAdmin`, `esUser`, `cerrarSesion`, `protegerPagina`, `mostrarUsuario`.
 
 ---
 
-##  Lógica JavaScript
+## Lógica JavaScript
 
 | Archivo | Función |
 |---|---|
@@ -509,7 +501,7 @@ Funciones disponibles: `setUsuario`, `getUsuario`, `estaLogueado`, `esAdmin`, `e
 
 ---
 
-##  Dashboard (`index.html`)
+## Dashboard (`index.html`)
 
 - **Sidebar** — Menú con acceso a todos los módulos.
 - **Topbar** — Muestra el nombre y rol del usuario, y un botón para cerrar sesión.
@@ -519,20 +511,20 @@ Funciones disponibles: `setUsuario`, `getUsuario`, `estaLogueado`, `esAdmin`, `e
 
 ---
 
-##  Roles y permisos
+## Roles y permisos
 
 | Módulo | ADMIN | USER |
 |---|---|---|
 | Dashboard | ✅ Ver estadísticas | ✅ Ver estadísticas |
-| Clientes | ✅ Crear / Editar / Eliminar | ❌ Solo lectura |
-| Productos | ✅ Crear / Editar / Eliminar | ❌ Solo lectura |
-| Ventas | ✅ Crear / Editar / Eliminar | ❌ Solo lectura |
-| Detalle Venta | ✅ Crear / Ver | ✅ Solo ver |
+| Clientes | ✅ Crear / Editar / Eliminar | ✅ Crear / Ver |
+| Productos | ✅ Crear / Editar / Eliminar | ✅ Crear / Ver |
+| Ventas | ✅ Crear / Editar / Eliminar | ✅ Crear / Ver |
+| Detalle Venta | ✅ Crear / Ver | ✅ Crear / Ver |
 | Usuarios | ✅ Crear / Editar / Eliminar | ❌ Sin acceso |
 
 ---
 
-##  Acceder a la aplicación web
+## Acceder a la aplicación web
 
 | URL | Descripción |
 |---|---|
@@ -542,17 +534,45 @@ Funciones disponibles: `setUsuario`, `getUsuario`, `estaLogueado`, `esAdmin`, `e
 
 ---
 
-##  Capturas del Frontend
+## Capturas del Frontend
 
 ![Login](screenshots/Frontend/login.png)
 ![Registro](screenshots/Frontend/registro.png)
 ![Dashboard](screenshots/Frontend/dashboard.png)
-![Clientes](screenshots/Frontend/clientes.png)
 ![Modal de edición](screenshots/Frontend/modal.png)
 
 ---
 
-##  Autor
+## Roles definidos
+
+| Rol | Permisos |
+|---|---|
+| `ADMIN` | GET, POST, PUT, DELETE en todos los módulos. Acceso a gestión de usuarios. |
+| `USER` | Solo GET en clientes, productos, ventas y detalle venta. Sin acceso a usuarios. |
+
+---
+
+## Rutas públicas
+
+| Ruta | Descripción |
+|---|---|
+| `/login.html` | Formulario de login |
+| `/registro.html` | Formulario de registro |
+| `/registro` | Endpoint POST para crear cuenta nueva |
+| `/css/**` | Estilos CSS |
+| `/js/**` | Scripts JavaScript |
+| `/images/**` | Imágenes |
+
+---
+
+## Capturas Spring Security
+
+![Login con Spring Security](screenshots/Security/login.png)
+![Registro nuevo usuario](screenshots/Security/registro.png)
+
+---
+
+## Autor
 
 **Saymon Santos — 2025020**  
 Proyecto KinalApp — 2026  
