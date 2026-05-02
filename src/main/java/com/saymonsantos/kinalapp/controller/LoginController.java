@@ -13,11 +13,6 @@ public class LoginController {
         return "login";
     }
 
-    // Mapea la URL /registro.html a la plantilla registro.html
-    @GetMapping("/registro.html")
-    public String registro() {
-        return "registro";
-    }
 
     // Mapea la URL /index.html a la plantilla index.html
     @GetMapping("/index.html")
