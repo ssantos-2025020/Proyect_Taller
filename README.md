@@ -4,10 +4,10 @@ Sistema de ventas desarrollado con Spring Boot y MySQL. Permite gestionar client
 
 ---
 
-##  Tecnologías utilizadas
+## 🚀 Tecnologías utilizadas
 
 - **Java 21**
-- **Spring Boot 4.0.2**
+- **Spring Boot 3.x**
 - **Spring Data JPA / Hibernate**
 - **MySQL 8.0**
 - **Maven**
@@ -15,7 +15,7 @@ Sistema de ventas desarrollado con Spring Boot y MySQL. Permite gestionar client
 
 ---
 
-##  Configuración del proyecto
+## 🔧 Configuración del proyecto
 
 ### Requisitos previos
 
@@ -31,30 +31,33 @@ git clone https://github.com/saymonsantos/kinalapp.git
 cd kinalapp
 ```
 
+### Crear la base de datos
 
-CREATE DATABASE kinal_db;
+```sql
+CREATE DATABASE dbClientes_in5am;
 ```
 
-Configurar el archivo `src/main/resources/application.properties`:
+### Configurar `application.properties`
 
+```properties
 spring.application.name=kinalapp
 
-#Conexion a MySql
-spring.datasource.url=jdbc:mysql://localhost:3306/kinal_db?useSSL=false&serverTimezone=UTC
-spring.datasource.username=IN5AM
-spring.datasource.password=TU_PASSWORD_AQUI
+# Conexion a MySQL
+spring.datasource.url=jdbc:mysql://localhost:3306/dbClientes_in5am?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=TU_PASSWORD
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
-#JPA/ Hibernate
+# JPA / Hibernate
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
 
+# Servidor
 server.port=9000
-
 ```
 
-### Correr el proyecto
+### Ejecutar el proyecto
 
 ```bash
 mvn spring-boot:run
@@ -62,7 +65,7 @@ mvn spring-boot:run
 
 ---
 
-##  Estructura del proyecto
+## 📁 Estructura del proyecto
 
 ```
 src/main/java/com/saymonsantos/kinalapp/
@@ -95,14 +98,14 @@ src/main/java/com/saymonsantos/kinalapp/
 
 ---
 
-##  Endpoints de la API
+## 📡 Endpoints de la API
 
 La API corre en `http://localhost:9000`
 
-###  Clientes
+### Clientes
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
+|---|---|---|
 | GET | `/clientes` | Lista todos los clientes |
 | GET | `/clientes/{dpi}` | Busca un cliente por DPI |
 | GET | `/clientes/activos` | Lista clientes activos |
@@ -121,12 +124,10 @@ La API corre en `http://localhost:9000`
 }
 ```
 
----
-
 ### Usuarios
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
+|---|---|---|
 | GET | `/usuarios` | Lista todos los usuarios |
 | GET | `/usuarios/{id}` | Busca un usuario por ID |
 | GET | `/usuarios/activos` | Lista usuarios activos |
@@ -146,12 +147,10 @@ La API corre en `http://localhost:9000`
 }
 ```
 
----
-
 ### Productos
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
+|---|---|---|
 | GET | `/productos` | Lista todos los productos |
 | GET | `/productos/{id}` | Busca un producto por ID |
 | GET | `/productos/activos` | Lista productos activos |
@@ -169,12 +168,10 @@ La API corre en `http://localhost:9000`
 }
 ```
 
----
-
 ### Ventas
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
+|---|---|---|
 | GET | `/ventas` | Lista todas las ventas |
 | GET | `/ventas/{id}` | Busca una venta por ID |
 | GET | `/ventas/activas` | Lista ventas activas |
@@ -206,12 +203,10 @@ La API corre en `http://localhost:9000`
 }
 ```
 
----
-
-# Detalle Venta
+### Detalle Venta
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
+|---|---|---|
 | GET | `/detalle-ventas` | Lista todos los detalles |
 | GET | `/detalle-ventas/{id}` | Busca un detalle por ID |
 | GET | `/detalle-ventas/venta/{id}` | Lista detalles por venta |
@@ -255,23 +250,23 @@ La API corre en `http://localhost:9000`
 }
 ```
 
->  El subtotal se calcula automaticamente: `cantidad * precioUnitario`
+> ℹ️ El subtotal se calcula automáticamente: `cantidad * precioUnitario`
 
 ---
 
-##  Codigos HTTP
+## 📋 Códigos HTTP
 
-| Codigo | Significado |
-|--------|-------------|
-| 200 | Todo salio bien y devuelve datos |
-| 201 | Se creo algo nuevo correctamente |
-| 204 | Se elimino correctamente |
-| 400 | Los datos que mandaste estan mal |
+| Código | Significado |
+|---|---|
+| 200 | Todo salió bien y devuelve datos |
+| 201 | Se creó algo nuevo correctamente |
+| 204 | Se eliminó correctamente |
+| 400 | Los datos que mandaste están mal |
 | 404 | Lo que buscas no existe |
 
 ---
 
-##  Orden para probar en Postman
+## 🧪 Orden para probar en Postman
 
 ```
 1. Crear Cliente    → POST /clientes
@@ -281,145 +276,284 @@ La API corre en `http://localhost:9000`
 5. Crear Detalle    → POST /detalle-ventas
 ```
 
->  Siempre en ese orden porque cada uno depende del anterior
+> Siempre en ese orden porque cada uno depende del anterior.
 
 ---
 
-##  Solución de problemas
+## 🐛 Solución de problemas
 
-**Error: Cannot map null into type int**
-Cambiar los campos `int` primitivos a `Integer` en las entidades.
+**`Cannot map null into type int`**  
+→ Cambiar los campos `int` primitivos a `Integer` en las entidades.
 
-**Error: 400 Bad Request en Venta**
-Asegurarse de mandar el objeto `cliente` y `usuario` completos en el body, no solo el ID.
+**`400 Bad Request` en Venta**  
+→ Asegurarse de mandar el objeto `cliente` y `usuario` completos en el body, no solo el ID.
 
-**Error: Puerto ya en uso**
-Cambiar el puerto en `application.properties`:
+**Error: Puerto ya en uso**  
+→ Cambiar el puerto en `application.properties`:
 ```properties
 server.port=9001
 ```
 
 ---
 
-##  Prueba de Codigo
+## 📸 Prueba de Código
 
-Al ejecutar el proyecto en IntelliJ se puede verificar que la aplicacion
-inicia correctamente en el puerto 9000, que Spring detecta los 5 repositorios,
-que Hibernate crea las tablas en la base de datos y que Tomcat queda listo
-para recibir peticiones.
+Al ejecutar el proyecto en IntelliJ se puede verificar que la aplicación inicia correctamente en el puerto 9000, que Spring detecta los 5 repositorios, que Hibernate crea las tablas en la base de datos y que Tomcat queda listo para recibir peticiones.
 
 ![Ejecucion del proyecto](screenshots/Codigo/ejecucion.png)
 
 ---
 
-##  Pruebas en Postman
+## 📬 Pruebas en Postman
 
-###  Cliente
+### Cliente
 
-Trae todos los clientes de la base de datos
+Trae todos los clientes de la base de datos  
 ![List Clientes](screenshots/Cliente/list-clientes.png)
 
-Crea un nuevo cliente
+Crea un nuevo cliente  
 ![Add Clientes](screenshots/Cliente/add-clientes.png)
 
-Busca un cliente por su DPI
+Busca un cliente por su DPI  
 ![Find Clientes](screenshots/Cliente/find-clientes.png)
 
-Actualiza los datos de un cliente existente
+Actualiza los datos de un cliente existente  
 ![Update Clientes](screenshots/Cliente/update-clientes.png)
 
-Elimina un cliente por su DPI
+Elimina un cliente por su DPI  
 ![Delete Clientes](screenshots/Cliente/delete-clientes.png)
 
-Trae solo los clientes con estado activo
+Trae solo los clientes con estado activo  
 ![Activos Clientes](screenshots/Cliente/activos-clientes.png)
 
-###  Usuario
+### Usuario
 
-Trae todos los usuarios de la base de datos
+Trae todos los usuarios de la base de datos  
 ![List Usuarios](screenshots/Usuario/list-usuarios.png)
 
-Crea un nuevo usuario
+Crea un nuevo usuario  
 ![Add Usuarios](screenshots/Usuario/add-usuarios.png)
 
-Busca un usuario por su ID
+Busca un usuario por su ID  
 ![Find Usuarios](screenshots/Usuario/find-usuarios.png)
 
-Actualiza los datos de un usuario existente
+Actualiza los datos de un usuario existente  
 ![Update Usuarios](screenshots/Usuario/update-usuarios.png)
 
-Elimina un usuario por su ID
+Elimina un usuario por su ID  
 ![Delete Usuarios](screenshots/Usuario/delete-usuarios.png)
 
-Trae solo los usuarios con estado activo
+Trae solo los usuarios con estado activo  
 ![Activos Usuarios](screenshots/Usuario/activos-usuarios.png)
 
-Trae usuarios filtrados por su rol
+Trae usuarios filtrados por su rol  
 ![Rol Usuarios](screenshots/Usuario/rol-usuarios.png)
 
-###  Producto
+### Producto
 
-Trae todos los productos de la base de datos
+Trae todos los productos de la base de datos  
 ![List Productos](screenshots/Producto/list-productos.png)
 
-Crea un nuevo producto
+Crea un nuevo producto  
 ![Add Productos](screenshots/Producto/add-productos.png)
 
-Busca un producto por su ID
+Busca un producto por su ID  
 ![Find Productos](screenshots/Producto/find-productos.png)
 
-Actualiza los datos de un producto existente
+Actualiza los datos de un producto existente  
 ![Update Productos](screenshots/Producto/update-productos.png)
 
-Elimina un producto por su ID
+Elimina un producto por su ID  
 ![Delete Productos](screenshots/Producto/delete-productos.png)
 
-Trae solo los productos con estado activo
+Trae solo los productos con estado activo  
 ![Activos Productos](screenshots/Producto/activos-productos.png)
 
-###  Venta
+### Venta
 
-Trae todas las ventas de la base de datos
+Trae todas las ventas de la base de datos  
 ![List Ventas](screenshots/Venta/list-ventas.png)
 
-Crea una nueva venta asociada a un cliente y usuario existente
+Crea una nueva venta asociada a un cliente y usuario existente  
 ![Add Ventas](screenshots/Venta/add-ventas.png)
 
-Busca una venta por su ID
+Busca una venta por su ID  
 ![Find Ventas](screenshots/Venta/find-ventas.png)
 
-Actualiza los datos de una venta existente
+Actualiza los datos de una venta existente  
 ![Update Ventas](screenshots/Venta/update-ventas.png)
 
-Elimina una venta por su ID
+Elimina una venta por su ID  
 ![Delete Ventas](screenshots/Venta/delete-ventas.png)
 
-Trae solo las ventas con estado activo
+Trae solo las ventas con estado activo  
 ![Activas Ventas](screenshots/Venta/activas-ventas.png)
 
-###  DetalleVenta
+### Detalle Venta
 
-Trae todos los detalles de venta de la base de datos
+Trae todos los detalles de venta de la base de datos  
 ![List DetalleVenta](screenshots/DetalleVenta/list-detalle-ventas.png)
 
-Crea un nuevo detalle, el subtotal se calcula automaticamente
+Crea un nuevo detalle, el subtotal se calcula automáticamente  
 ![Add DetalleVenta](screenshots/DetalleVenta/add-detalle-ventas.png)
 
-Busca un detalle por su ID
+Busca un detalle por su ID  
 ![Find DetalleVenta](screenshots/DetalleVenta/find-detalle-ventas.png)
 
-Actualiza los datos de un detalle existente
+Actualiza los datos de un detalle existente  
 ![Update DetalleVenta](screenshots/DetalleVenta/update-detalle-ventas.png)
 
-Elimina un detalle por su ID
+Elimina un detalle por su ID  
 ![Delete DetalleVenta](screenshots/DetalleVenta/delete-detalle-ventas.png)
 
-Trae todos los detalles que pertenecen a una venta especifica
+Trae todos los detalles que pertenecen a una venta específica  
 ![PorVenta DetalleVenta](screenshots/DetalleVenta/porventa-detalle-ventas.png)
+
+---
+
+---
+
+#  Actualización — Dashboard Web (Frontend)
+
+Se agregó un dashboard web completo con login, registro, roles y CRUD visual para todos los módulos.
+
+---
+
+##  Nuevas tecnologías agregadas
+
+- **HTML5 / CSS3**
+- **JavaScript (ES6 Modules)**
+- **SessionStorage** (para manejo de sesión)
+- **Fetch API** (para consumir el backend)
+- **Google Fonts (DM Sans / DM Mono)**
+- **Diseño responsive**
+
+---
+
+##  Estructura agregada al proyecto
+
+```
+src/main/resources/
+├── static/
+│   ├── css/
+│   │   ├── styles.css
+│   │   ├── login.css
+│   │   └── registro.css
+│   ├── js/
+│   │   ├── config.js
+│   │   ├── utils.js
+│   │   ├── api.js
+│   │   ├── auth.js
+│   │   ├── login.js
+│   │   ├── registro.js
+│   │   ├── dashboard.js
+│   │   ├── clientes.js
+│   │   ├── productos.js
+│   │   ├── ventas.js
+│   │   ├── detalle.js
+│   │   ├── usuarios.js
+│   │   └── main.js
+│   └── images/
+│       └── logo.png
+└── templates/
+    ├── index.html
+    ├── login.html
+    └── registro.html
+```
+
+También se agregaron al backend:
+
+```
+controller/
+├── LoginController.java
+├── ClienteViewController.java
+└── config/
+    └── SecurityConfig.java
+```
+
+---
+
+##  Login y Registro
+
+- **login.html** — Inicio de sesión con validación de campos, animaciones de error/éxito y conexión al backend.
+- **registro.html** — Registro de nuevos usuarios. Si se ingresa la clave secreta (`Kinal2025Admin`) se registra como ADMIN; de lo contrario, como USER.
+
+> ⚠️ **Nota de seguridad:** Para producción, se recomienda manejar la asignación de roles desde el backend y no exponer la clave en el frontend.
+
+---
+
+##  Manejo de sesión (`auth.js`)
+
+Guarda el usuario en `sessionStorage` (se borra al cerrar el navegador).  
+Funciones disponibles: `setUsuario`, `getUsuario`, `estaLogueado`, `esAdmin`, `esUser`, `cerrarSesion`, `protegerPagina`, `mostrarUsuario`.
+
+---
+
+##  Lógica JavaScript
+
+| Archivo | Función |
+|---|---|
+| `config.js` | Almacena la URL base del backend (`http://localhost:9000`) |
+| `utils.js` | Funciones reutilizables: `toast`, `badge`, `filterTable`, `setError`, `cerrarModal`, `abrirModal`, `initClock`, `initDate` |
+| `api.js` | Peticiones HTTP genéricas: `apiGet`, `apiPost`, `apiPut`, `apiDelete` |
+| `auth.js` | Manejo de sesión y roles |
+| `login.js` | Lógica del inicio de sesión |
+| `registro.js` | Lógica del registro de usuarios |
+| `dashboard.js` | Carga las estadísticas del dashboard |
+| `clientes.js` | CRUD de clientes (solo ADMIN puede editar/eliminar) |
+| `productos.js` | CRUD de productos (solo ADMIN puede editar/eliminar) |
+| `ventas.js` | CRUD de ventas (solo ADMIN puede editar/eliminar) |
+| `detalle.js` | CRUD de detalles de venta (USER solo lectura, ADMIN puede crear) |
+| `usuarios.js` | CRUD de usuarios (solo ADMIN puede ver/editar/eliminar) |
+| `main.js` | Punto de entrada: protege rutas, muestra usuario y maneja navegación |
+
+---
+
+##  Dashboard (`index.html`)
+
+- **Sidebar** — Menú con acceso a todos los módulos.
+- **Topbar** — Muestra el nombre y rol del usuario, y un botón para cerrar sesión.
+- **Tarjetas de estadísticas** — Muestra la cantidad de clientes, productos, ventas, detalles y usuarios registrados.
+- **Tablas** — Cada módulo tiene búsqueda en tiempo real y botones de acción (editar/eliminar solo para ADMIN).
+- **Modales** — Ventanas emergentes para crear o editar registros, con validaciones en cada campo.
+
+---
+
+##  Roles y permisos
+
+| Módulo | ADMIN | USER |
+|---|---|---|
+| Dashboard | ✅ Ver estadísticas | ✅ Ver estadísticas |
+| Clientes | ✅ Crear / Editar / Eliminar | ❌ Solo lectura |
+| Productos | ✅ Crear / Editar / Eliminar | ❌ Solo lectura |
+| Ventas | ✅ Crear / Editar / Eliminar | ❌ Solo lectura |
+| Detalle Venta | ✅ Crear / Ver | ✅ Solo ver |
+| Usuarios | ✅ Crear / Editar / Eliminar | ❌ Sin acceso |
+
+---
+
+##  Acceder a la aplicación web
+
+| URL | Descripción |
+|---|---|
+| `http://localhost:9000` | Dashboard (redirige a login si no hay sesión) |
+| `http://localhost:9000/login.html` | Página de login |
+| `http://localhost:9000/registro.html` | Página de registro |
+
+---
+
+##  Capturas del Frontend
+
+![Login](screenshots/Frontend/login.png)
+![Registro](screenshots/Frontend/registro.png)
+![Dashboard](screenshots/Frontend/dashboard.png)
+![Clientes](screenshots/Frontend/clientes.png)
+![Modal de edición](screenshots/Frontend/modal.png)
 
 ---
 
 ##  Autor
 
-**Saymon Santos - 2025020**
-Proyecto KinalApp - 2026
+**Saymon Santos — 2025020**  
+Proyecto KinalApp — 2026  
+Fundación Kinal — IN5AM
