@@ -2,18 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+          https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.5</version>  <!-- ← Tu versión actual -->
+		<version>4.0.5</version>
 		<relativePath/>
 	</parent>
 
-	<groupId>com.herbertgarcia</groupId>
+	<groupId>com.saymonsantos</groupId>
 	<artifactId>kinalapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>KinalApp</name>
@@ -24,6 +24,7 @@
 	</properties>
 
 	<dependencies>
+
 		<!-- Spring Boot Web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -36,7 +37,7 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
-		<!-- Thymeleaf extras para Spring Security -->
+		<!-- Thymeleaf + Spring Security (para th:sec en templates) -->
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
@@ -54,10 +55,10 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		<!-- MySQL (CORREGIDO) -->
+		<!-- MySQL -->
 		<dependency>
 			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>  <!-- ← CORREGIDO: era "jc", ahora "j" -->
+			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -89,6 +90,7 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -116,4 +118,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
