@@ -1,30 +1,27 @@
 /**
  * DETALLE VENTA - CRUD CON RESTRICCIONES
- * No se puede eliminar detalles por integridad contable
- * Los usuarios normales solo pueden ver, los ADMIN pueden crear
  */
 
 import { Auth } from './auth.js';
-import { toast, mono, limpiarErrores, setError, cerrarModal, abrirModal } from './utils.js';
-import { apiGet, apiPost, apiPut } from './api.js';
+import { toast, badge, mono, limpiarErrores, setError, cerrarModal, abrirModal, manejarErrorBD } from './utils.js';
+import { apiGet, apiPost, apiPut, apiDelete } from './api.js';
 
 let detalleData = [];
 
 /**
  * Carga los detalles de venta
- * Controla la visibilidad del botón "Nuevo detalle" según el rol
  */
 export async function cargarDetalle() {
   const tbody = document.getElementById('body-detalle');
   if (!tbody) return;
 
-  // Solo ADMIN puede crear nuevos detalles
+  // ADMIN y USER pueden crear nuevos detalles
   const btnNuevoDetalle = document.getElementById('btn-nuevo-detalle');
   if (btnNuevoDetalle) {
-    if (!Auth.esAdmin()) {
-      btnNuevoDetalle.style.display = 'none';
-    } else {
+    if (Auth.esAdmin() || Auth.esUser()) {
       btnNuevoDetalle.style.display = 'flex';
+    } else {
+      btnNuevoDetalle.style.display = 'none';
     }
   }
 
@@ -250,6 +247,7 @@ export async function guardarDetalle() {
     await cargarDetalle();
   } catch (error) {
     console.error('Error guardando detalle:', error);
+    toast('Error al guardar el detalle. Por favor, verifique los datos.', 'error');
   }
 }
 
