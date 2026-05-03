@@ -65,8 +65,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT,    "/detalle-ventas/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/detalle-ventas/**").hasRole("ADMIN")
 
-                        // ── USUARIOS — solo ADMIN ──
-                        .requestMatchers("/usuarios/**").hasRole("ADMIN")
+                        // ── USUARIOS ──
+                        .requestMatchers(HttpMethod.GET, "/usuarios/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasRole("ADMIN")
 
                         // ── INDEX / DASHBOARD ──
                         .requestMatchers("/index.html").hasAnyRole("ADMIN", "USER")
