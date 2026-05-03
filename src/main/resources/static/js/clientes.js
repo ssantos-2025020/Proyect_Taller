@@ -1,16 +1,13 @@
 /**
  * CLIENTES - CRUD COMPLETO
- * Crear, Leer, Actualizar y Eliminar clientes
- * Los permisos dependen del rol: solo ADMIN puede editar/eliminar
  */
 
 import { Auth } from './auth.js';
-import { toast, badge, mono, limpiarErrores, setError, cerrarModal, abrirModal } from './utils.js';
+import { toast, badge, mono, limpiarErrores, setError, setErrorWithMessage, cerrarModal, abrirModal, manejarErrorBD } from './utils.js';
 import { apiGet, apiPost, apiPut, apiDelete } from './api.js';
 
 /**
  * Carga la tabla de clientes
- * Si el usuario no es ADMIN, oculta los botones de editar/eliminar
  */
 export async function cargarClientes() {
   const tbody = document.getElementById('body-clientes');
@@ -26,13 +23,24 @@ export async function cargarClientes() {
 
     // Renderizar cada fila
     tbody.innerHTML = data.map(c => {
-      // Solo mostrar botones si es ADMIN
-      const botones = Auth.esAdmin() ? `
-        <div class="actions-cell">
-          <button class="btn btn-sm btn-edit" data-editar-cliente='${JSON.stringify(c)}'>Editar</button>
-          <button class="btn btn-sm btn-danger" data-eliminar-cliente="${c.DPICliente}">Eliminar</button>
-        </div>
-      ` : `<span style="color: var(--text3); font-size: 12px;">Solo lectura</span>`;
+      // Mostrar botones según el rol
+      if (Auth.esAdmin()) {
+        var botones = `
+          <div class="actions-cell">
+            <button class="btn btn-sm btn-edit" data-ver-cliente='${JSON.stringify(c)}'>Ver</button>
+            <button class="btn btn-sm btn-edit" data-editar-cliente='${JSON.stringify(c)}'>Editar</button>
+            <button class="btn btn-sm btn-danger" data-eliminar-cliente="${c.DPICliente}">Eliminar</button>
+          </div>
+        `;
+      } else if (Auth.esUser()) {
+        var botones = `
+          <div class="actions-cell">
+            <button class="btn btn-sm btn-edit" data-ver-cliente='${JSON.stringify(c)}'>Ver</button>
+          </div>
+        `;
+      } else {
+        var botones = `<span style="color: var(--text3); font-size: 12px;">Solo lectura</span>`;
+      }
 
       return `
         <tr>
@@ -58,6 +66,14 @@ export async function cargarClientes() {
         btn.addEventListener('click', () => eliminarCliente(btn.getAttribute('data-eliminar-cliente')));
       });
     }
+
+    // Event listener para ver cliente (todos los roles)
+    document.querySelectorAll('[data-ver-cliente]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const data = JSON.parse(btn.getAttribute('data-ver-cliente'));
+        abrirModalCliente(data);
+      });
+    });
   } catch (error) {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Error al conectar con la API</td></tr>';
   }
@@ -123,10 +139,32 @@ function validarCliente() {
   const editing = document.getElementById('c-editing-dpi')?.value || '';
   let ok = true;
 
-  if (!editing) ok = setError('c-dpi', 'err-c-dpi', !/^\d{13}$/.test(dpi)) && ok;
-  ok = setError('c-nombre', 'err-c-nombre', nombre.length < 2) && ok;
-  ok = setError('c-apellido', 'err-c-apellido', ape.length < 2) && ok;
-  ok = setError('c-direccion', 'err-c-direccion', dir.length < 5) && ok;
+  if (!editing) {
+    if (!/^\d{13}$/.test(dpi)) {
+      ok = setErrorWithMessage('c-dpi', 'err-c-dpi', true, 'El DPI debe tener exactamente 13 dígitos') && ok;
+    } else {
+      ok = setError('c-dpi', 'err-c-dpi', false) && ok;
+    }
+  }
+
+  if (nombre.length < 2) {
+    ok = setErrorWithMessage('c-nombre', 'err-c-nombre', true, 'El nombre debe tener al menos 2 caracteres') && ok;
+  } else {
+    ok = setError('c-nombre', 'err-c-nombre', false) && ok;
+  }
+
+  if (ape.length < 2) {
+    ok = setErrorWithMessage('c-apellido', 'err-c-apellido', true, 'El apellido debe tener al menos 2 caracteres') && ok;
+  } else {
+    ok = setError('c-apellido', 'err-c-apellido', false) && ok;
+  }
+
+  if (dir.length < 5) {
+    ok = setErrorWithMessage('c-direccion', 'err-c-direccion', true, 'La dirección debe tener al menos 5 caracteres') && ok;
+  } else {
+    ok = setError('c-direccion', 'err-c-direccion', false) && ok;
+  }
+
   return ok;
 }
 
@@ -160,6 +198,7 @@ export async function guardarCliente() {
     await cargarClientes();
   } catch (error) {
     console.error('Error guardando cliente:', error);
+    toast('Error al guardar el cliente. Por favor, verifique los datos.', 'error');
   }
 }
 
@@ -175,5 +214,6 @@ export async function eliminarCliente(dpi) {
     await cargarClientes();
   } catch (error) {
     console.error('Error eliminando cliente:', error);
+    toast('Error al eliminar el cliente. Intente nuevamente.', 'error');
   }
 }
