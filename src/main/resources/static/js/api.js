@@ -40,7 +40,6 @@ export async function apiPost(endpoint, data) {
     }
     return await response.json();
   } catch (error) {
-    toast(error.message, 'error');
     throw error;
   }
 }
@@ -63,7 +62,6 @@ export async function apiPut(endpoint, data) {
     }
     return await response.json();
   } catch (error) {
-    toast(error.message, 'error');
     throw error;
   }
 }
@@ -83,7 +81,6 @@ export async function apiDelete(endpoint) {
     }
     return true;
   } catch (error) {
-    toast(error.message, 'error');
     throw error;
   }
 }
