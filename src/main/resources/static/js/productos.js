@@ -1,16 +1,13 @@
 /**
  * PRODUCTOS - CRUD COMPLETO
- * Crear, Leer, Actualizar y Eliminar productos
- * Los permisos dependen del rol: solo ADMIN puede editar/eliminar
  */
 
 import { Auth } from './auth.js';
-import { toast, badge, mono, limpiarErrores, setError, cerrarModal, abrirModal } from './utils.js';
+import { toast, badge, mono, limpiarErrores, setError, setErrorWithMessage, cerrarModal, abrirModal, manejarErrorBD } from './utils.js';
 import { apiGet, apiPost, apiPut, apiDelete } from './api.js';
 
 /**
  * Carga la tabla de productos
- * Si el usuario no es ADMIN, oculta los botones de editar/eliminar
  */
 export async function cargarProductos() {
   const tbody = document.getElementById('body-productos');
@@ -25,12 +22,24 @@ export async function cargarProductos() {
     }
 
     tbody.innerHTML = data.map(p => {
-      const botones = Auth.esAdmin() ? `
-        <div class="actions-cell">
-          <button class="btn btn-sm btn-edit" data-editar-producto='${JSON.stringify(p)}'>Editar</button>
-          <button class="btn btn-sm btn-danger" data-eliminar-producto="${p.codigoProducto}">Eliminar</button>
-        </div>
-      ` : `<span style="color: var(--text3); font-size: 12px;">Solo lectura</span>`;
+      // Mostrar botones según el rol
+      if (Auth.esAdmin()) {
+        var botones = `
+          <div class="actions-cell">
+            <button class="btn btn-sm btn-edit" data-ver-producto='${JSON.stringify(p)}'>Ver</button>
+            <button class="btn btn-sm btn-edit" data-editar-producto='${JSON.stringify(p)}'>Editar</button>
+            <button class="btn btn-sm btn-danger" data-eliminar-producto="${p.codigoProducto}">Eliminar</button>
+          </div>
+        `;
+      } else if (Auth.esUser()) {
+        var botones = `
+          <div class="actions-cell">
+            <button class="btn btn-sm btn-edit" data-ver-producto='${JSON.stringify(p)}'>Ver</button>
+          </div>
+        `;
+      } else {
+        var botones = `<span style="color: var(--text3); font-size: 12px;">Solo lectura</span>`;
+      }
 
       return `
         <tr>
@@ -55,6 +64,14 @@ export async function cargarProductos() {
         btn.addEventListener('click', () => eliminarProducto(btn.getAttribute('data-eliminar-producto')));
       });
     }
+
+    // Event listener para ver producto (todos los roles)
+    document.querySelectorAll('[data-ver-producto]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const data = JSON.parse(btn.getAttribute('data-ver-producto'));
+        abrirModalProducto(data);
+      });
+    });
   } catch (error) {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Error al conectar con la API</td></tr>';
   }
@@ -111,9 +128,24 @@ function validarProducto() {
   const stock = parseInt(document.getElementById('p-stock')?.value || '0');
   let ok = true;
 
-  ok = setError('p-nombre', 'err-p-nombre', nombre.length < 2) && ok;
-  ok = setError('p-precio', 'err-p-precio', isNaN(precio) || precio <= 0) && ok;
-  ok = setError('p-stock', 'err-p-stock', isNaN(stock) || stock < 0) && ok;
+  if (nombre.length < 2) {
+    ok = setErrorWithMessage('p-nombre', 'err-p-nombre', true, 'El nombre debe tener al menos 2 caracteres') && ok;
+  } else {
+    ok = setError('p-nombre', 'err-p-nombre', false) && ok;
+  }
+
+  if (isNaN(precio) || precio <= 0) {
+    ok = setErrorWithMessage('p-precio', 'err-p-precio', true, 'El precio debe ser un número mayor a 0') && ok;
+  } else {
+    ok = setError('p-precio', 'err-p-precio', false) && ok;
+  }
+
+  if (isNaN(stock) || stock < 0) {
+    ok = setErrorWithMessage('p-stock', 'err-p-stock', true, 'El stock debe ser un número mayor o igual a 0') && ok;
+  } else {
+    ok = setError('p-stock', 'err-p-stock', false) && ok;
+  }
+
   return ok;
 }
 
@@ -146,6 +178,7 @@ export async function guardarProducto() {
     await cargarProductos();
   } catch (error) {
     console.error('Error guardando producto:', error);
+    toast('Error al guardar el producto. Por favor, verifique los datos.', 'error');
   }
 }
 
@@ -161,5 +194,6 @@ export async function eliminarProducto(id) {
     await cargarProductos();
   } catch (error) {
     console.error('Error eliminando producto:', error);
+    toast('Error al eliminar el producto. Intente nuevamente.', 'error');
   }
 }
