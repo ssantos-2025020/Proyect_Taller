@@ -43,30 +43,30 @@ public class SecurityConfig {
 
                         // ── CLIENTES ──
                         .requestMatchers(HttpMethod.GET,    "/clientes/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.POST,   "/clientes/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,   "/clientes/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.PUT,    "/clientes/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/clientes/**").hasRole("ADMIN")
 
                         // ── PRODUCTOS ──
                         .requestMatchers(HttpMethod.GET,    "/productos/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.POST,   "/productos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,   "/productos/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.PUT,    "/productos/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/productos/**").hasRole("ADMIN")
 
                         // ── VENTAS ──
                         .requestMatchers(HttpMethod.GET,    "/ventas/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.POST,   "/ventas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,   "/ventas/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.PUT,    "/ventas/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/ventas/**").hasRole("ADMIN")
 
                         // ── DETALLE VENTA ──
                         .requestMatchers(HttpMethod.GET,    "/detalle-ventas/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.POST,   "/detalle-ventas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,   "/detalle-ventas/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.PUT,    "/detalle-ventas/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/detalle-ventas/**").hasRole("ADMIN")
 
                         // ── USUARIOS ──
-                        .requestMatchers(HttpMethod.GET, "/usuarios/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/usuarios/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/usuarios/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasRole("ADMIN")
