@@ -1,16 +1,13 @@
 /**
  * VENTAS - CRUD COMPLETO
- * Crear, Leer, Actualizar y Eliminar ventas
- * Los permisos dependen del rol: solo ADMIN puede editar/eliminar
  */
 
 import { Auth } from './auth.js';
-import { toast, badge, mono, limpiarErrores, setError, cerrarModal, abrirModal } from './utils.js';
+import { toast, badge, mono, limpiarErrores, setError, setErrorWithMessage, cerrarModal, abrirModal, manejarErrorBD } from './utils.js';
 import { apiGet, apiPost, apiPut, apiDelete } from './api.js';
 
 /**
  * Carga la tabla de ventas
- * Si el usuario no es ADMIN, oculta los botones de editar/eliminar
  */
 export async function cargarVentas() {
   const tbody = document.getElementById('body-ventas');
@@ -25,12 +22,24 @@ export async function cargarVentas() {
     }
 
     tbody.innerHTML = data.map(v => {
-      const botones = Auth.esAdmin() ? `
-        <div class="actions-cell">
-          <button class="btn btn-sm btn-edit" data-editar-venta='${JSON.stringify(v)}'>Editar</button>
-          <button class="btn btn-sm btn-danger" data-eliminar-venta="${v.codigoVenta}">Eliminar</button>
-        </div>
-      ` : `<span style="color: var(--text3); font-size: 12px;">Solo lectura</span>`;
+      // Mostrar botones según el rol
+      if (Auth.esAdmin()) {
+        var botones = `
+          <div class="actions-cell">
+            <button class="btn btn-sm btn-edit" data-ver-venta='${JSON.stringify(v)}'>Ver</button>
+            <button class="btn btn-sm btn-edit" data-editar-venta='${JSON.stringify(v)}'>Editar</button>
+            <button class="btn btn-sm btn-danger" data-eliminar-venta="${v.codigoVenta}">Eliminar</button>
+          </div>
+        `;
+      } else if (Auth.esUser()) {
+        var botones = `
+          <div class="actions-cell">
+            <button class="btn btn-sm btn-edit" data-ver-venta='${JSON.stringify(v)}'>Ver</button>
+          </div>
+        `;
+      } else {
+        var botones = `<span style="color: var(--text3); font-size: 12px;">Solo lectura</span>`;
+      }
 
       return `
         <tr>
@@ -56,6 +65,14 @@ export async function cargarVentas() {
         btn.addEventListener('click', () => eliminarVenta(btn.getAttribute('data-eliminar-venta')));
       });
     }
+
+    // Event listener para ver venta (todos los roles)
+    document.querySelectorAll('[data-ver-venta]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const data = JSON.parse(btn.getAttribute('data-ver-venta'));
+        abrirModalVenta(data);
+      });
+    });
   } catch (error) {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Error al conectar con la API</td></tr>';
   }
@@ -118,10 +135,30 @@ function validarVenta() {
   const usuario = parseInt(document.getElementById('v-usuario')?.value || '0');
   let ok = true;
 
-  ok = setError('v-fecha', 'err-v-fecha', !fecha) && ok;
-  ok = setError('v-total', 'err-v-total', isNaN(total) || total <= 0) && ok;
-  ok = setError('v-cliente', 'err-v-cliente', !/^\d{13}$/.test(cliente)) && ok;
-  ok = setError('v-usuario', 'err-v-usuario', isNaN(usuario) || usuario < 1) && ok;
+  if (!fecha) {
+    ok = setErrorWithMessage('v-fecha', 'err-v-fecha', true, 'La fecha es obligatoria') && ok;
+  } else {
+    ok = setError('v-fecha', 'err-v-fecha', false) && ok;
+  }
+
+  if (isNaN(total) || total <= 0) {
+    ok = setErrorWithMessage('v-total', 'err-v-total', true, 'El total debe ser un número mayor a 0') && ok;
+  } else {
+    ok = setError('v-total', 'err-v-total', false) && ok;
+  }
+
+  if (!/^\d{13}$/.test(cliente)) {
+    ok = setErrorWithMessage('v-cliente', 'err-v-cliente', true, 'El DPI del cliente debe tener exactamente 13 dígitos') && ok;
+  } else {
+    ok = setError('v-cliente', 'err-v-cliente', false) && ok;
+  }
+
+  if (isNaN(usuario) || usuario < 1) {
+    ok = setErrorWithMessage('v-usuario', 'err-v-usuario', true, 'Debe seleccionar un usuario válido') && ok;
+  } else {
+    ok = setError('v-usuario', 'err-v-usuario', false) && ok;
+  }
+
   return ok;
 }
 
@@ -139,10 +176,12 @@ export async function guardarVenta() {
     fechaVenta: document.getElementById('v-fecha')?.value || '',
     total: parseFloat(document.getElementById('v-total')?.value || '0'),
     cliente: {
-      DPICliente: document.getElementById('v-cliente')?.value.trim() || ''
+      DPICliente: document.getElementById('v-cliente')?.value.trim() || '',
+      estado: 1
     },
     usuario: {
-      codigoUsuario: parseInt(document.getElementById('v-usuario')?.value || '0')
+      codigoUsuario: parseInt(document.getElementById('v-usuario')?.value || '0'),
+      estado: 1
     },
     estado: parseInt(document.getElementById('v-estado')?.value || '1')
   };
@@ -158,7 +197,8 @@ export async function guardarVenta() {
     cerrarModal('modal-venta');
     await cargarVentas();
   } catch (error) {
-    console.error('Error guardando venta:', error);
+    console.error('Error en guardarVenta:', error);
+    toast('Error al guardar la venta. Por favor, verifique los datos.', 'error');
   }
 }
 
