@@ -5,6 +5,7 @@
 
 import { BASE_URL } from './config.js';
 import { apiGet } from './api.js';
+import { Auth } from './auth.js';
 
 /**
  * Carga las estadísticas del dashboard
@@ -12,14 +13,26 @@ import { apiGet } from './api.js';
  */
 export async function cargarDashboard() {
   try {
-    // Realizar todas las peticiones en paralelo para mayor eficiencia
-    const [clientes, productos, ventas, detalles, usuarios] = await Promise.all([
+    // Determinar si cargar usuarios según el rol
+    const isAdmin = Auth.esAdmin();
+
+    // Realizar peticiones según el rol
+    const requests = [
       apiGet('/clientes'),
       apiGet('/productos'),
       apiGet('/ventas'),
-      apiGet('/detalle-ventas'),
-      apiGet('/usuarios')
-    ]);
+      apiGet('/detalle-ventas')
+    ];
+
+    // Solo cargar usuarios si es ADMIN
+    if (isAdmin) {
+      requests.push(apiGet('/usuarios'));
+    }
+
+    const results = await Promise.all(requests);
+
+    // Extraer resultados (usuarios puede no estar presente)
+    const [clientes, productos, ventas, detalles, usuarios] = isAdmin ? results : [...results, null];
 
     // Actualizar los valores en las tarjetas del dashboard
     const dClientes = document.getElementById('d-clientes');
@@ -32,7 +45,7 @@ export async function cargarDashboard() {
     if (dProductos) dProductos.textContent = productos.length || 0;
     if (dVentas) dVentas.textContent = ventas.length || 0;
     if (dDetalles) dDetalles.textContent = detalles.length || 0;
-    if (dUsuarios) dUsuarios.textContent = usuarios.length || 0;
+    if (dUsuarios) dUsuarios.textContent = isAdmin && usuarios ? usuarios.length : 0;
   } catch (error) {
     console.error('Error cargando dashboard:', error);
   }
