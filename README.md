@@ -114,7 +114,7 @@ La API corre en `http://localhost:9000`
 ### Clientes
 
 | Método | Endpoint | Descripción |
-|---|---|---|
+|--------|----------|-------------|
 | GET | `/clientes` | Lista todos los clientes |
 | GET | `/clientes/{dpi}` | Busca un cliente por DPI |
 | GET | `/clientes/activos` | Lista clientes activos |
@@ -136,7 +136,7 @@ La API corre en `http://localhost:9000`
 ### Usuarios
 
 | Método | Endpoint | Descripción |
-|---|---|---|
+|--------|----------|-------------|
 | GET | `/usuarios` | Lista todos los usuarios |
 | GET | `/usuarios/{id}` | Busca un usuario por ID |
 | GET | `/usuarios/activos` | Lista usuarios activos |
@@ -159,7 +159,7 @@ La API corre en `http://localhost:9000`
 ### Productos
 
 | Método | Endpoint | Descripción |
-|---|---|---|
+|--------|----------|-------------|
 | GET | `/productos` | Lista todos los productos |
 | GET | `/productos/{id}` | Busca un producto por ID |
 | GET | `/productos/activos` | Lista productos activos |
@@ -180,7 +180,7 @@ La API corre en `http://localhost:9000`
 ### Ventas
 
 | Método | Endpoint | Descripción |
-|---|---|---|
+|--------|----------|-------------|
 | GET | `/ventas` | Lista todas las ventas |
 | GET | `/ventas/{id}` | Busca una venta por ID |
 | GET | `/ventas/activas` | Lista ventas activas |
@@ -215,7 +215,7 @@ La API corre en `http://localhost:9000`
 ### Detalle Venta
 
 | Método | Endpoint | Descripción |
-|---|---|---|
+|--------|----------|-------------|
 | GET | `/detalle-ventas` | Lista todos los detalles |
 | GET | `/detalle-ventas/{id}` | Busca un detalle por ID |
 | GET | `/detalle-ventas/venta/{id}` | Lista detalles por venta |
@@ -251,7 +251,7 @@ La API corre en `http://localhost:9000`
 ## 📋 Códigos HTTP
 
 | Código | Significado |
-|---|---|
+|--------|-------------|
 | 200 | Todo salió bien y devuelve datos |
 | 201 | Se creó algo nuevo correctamente |
 | 204 | Se eliminó correctamente |
@@ -484,7 +484,7 @@ Funciones disponibles: `setUsuario`, `getUsuario`, `estaLogueado`, `esAdmin`, `e
 ## Lógica JavaScript
 
 | Archivo | Función |
-|---|---|
+|---------|---------|
 | `config.js` | Almacena la URL base del backend (`http://localhost:9000`) |
 | `utils.js` | Funciones reutilizables: `toast`, `badge`, `filterTable`, `setError`, `cerrarModal`, `abrirModal`, `initClock`, `initDate` |
 | `api.js` | Peticiones HTTP genéricas: `apiGet`, `apiPost`, `apiPut`, `apiDelete` |
@@ -514,7 +514,7 @@ Funciones disponibles: `setUsuario`, `getUsuario`, `estaLogueado`, `esAdmin`, `e
 ## Roles y permisos
 
 | Módulo | ADMIN | USER |
-|---|---|---|
+|--------|-------|------|
 | Dashboard | ✅ Ver estadísticas | ✅ Ver estadísticas |
 | Clientes | ✅ Crear / Editar / Eliminar | ✅ Crear / Ver |
 | Productos | ✅ Crear / Editar / Eliminar | ✅ Crear / Ver |
@@ -527,7 +527,7 @@ Funciones disponibles: `setUsuario`, `getUsuario`, `estaLogueado`, `esAdmin`, `e
 ## Acceder a la aplicación web
 
 | URL | Descripción |
-|---|---|
+|-----|-------------|
 | `http://localhost:9000` | Dashboard (redirige a login si no hay sesión) |
 | `http://localhost:9000/login.html` | Página de login |
 | `http://localhost:9000/registro.html` | Página de registro |
@@ -546,7 +546,7 @@ Funciones disponibles: `setUsuario`, `getUsuario`, `estaLogueado`, `esAdmin`, `e
 ## Roles definidos
 
 | Rol | Permisos |
-|---|---|
+|-----|----------|
 | `ADMIN` | GET, POST, PUT, DELETE en todos los módulos. Acceso a gestión de usuarios. |
 | `USER` | Solo GET en clientes, productos, ventas y detalle venta. Sin acceso a usuarios. |
 
@@ -555,7 +555,7 @@ Funciones disponibles: `setUsuario`, `getUsuario`, `estaLogueado`, `esAdmin`, `e
 ## Rutas públicas
 
 | Ruta | Descripción |
-|---|---|
+|------|-------------|
 | `/login.html` | Formulario de login |
 | `/registro.html` | Formulario de registro |
 | `/registro` | Endpoint POST para crear cuenta nueva |
